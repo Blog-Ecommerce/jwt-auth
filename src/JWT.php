@@ -90,19 +90,20 @@ class JWT
         return $this->fromSubject($user);
     }
 
-    /**
-     * Refresh an expired token.
-     *
-     * @param  bool  $forceForever
-     * @param  bool  $resetClaims
-     *
-     * @return string
-     */
-    public function refresh($forceForever = false, $resetClaims = false)
+  /**
+   * Refresh an expired token.
+   *
+   * @param JWTSubject $subject
+   * @param bool $forceForever
+   * @param bool $resetClaims
+   * @return string
+   * @throws JWTException
+   */
+    public function refresh(JWTSubject $subject, $forceForever = false, $resetClaims = false)
     {
         $this->requireToken();
 
-        return $this->manager->customClaims($this->getCustomClaims())
+        return $this->manager->customClaims($this->getClaimsArray($subject))
                              ->refresh($this->token, $forceForever, $resetClaims)
                              ->get();
     }

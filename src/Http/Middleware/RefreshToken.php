@@ -32,7 +32,7 @@ class RefreshToken extends BaseMiddleware
         $this->checkForToken($request);
 
         try {
-            $token = $this->auth->parseToken()->refresh();
+            $token = $this->auth->parseToken()->refresh($this->auth->user());
         } catch (JWTException $e) {
             throw new UnauthorizedHttpException('jwt-auth', $e->getMessage(), $e, $e->getCode());
         }
